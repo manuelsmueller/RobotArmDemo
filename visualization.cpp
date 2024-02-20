@@ -3,8 +3,7 @@
  *
  *  Created on: XX.YY.ZZ
  *
- *      Author: Manuel Müller, Rishika Agawal, Lennard Hettich
- *      (C) IAS University of Stuttgart
+ *      Author: Manuel Müller, Lennard Hetticht
  *
  * visualization.cpp
  * this module contains the main function of the simulation.
