@@ -906,7 +906,7 @@ bool PathPlanner::calcPath(float* q_start, float* q_end, collider::Edge* startPo
                 }
 
                 if (minValueIndex_pp == -1) {
-                    std::cout << "Warning: loose graph!" << std::endl;
+                    // std::cout << "Warning: loose graph!" << std::endl;
                     break;
                 }
 

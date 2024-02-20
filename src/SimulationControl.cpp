@@ -1262,7 +1262,7 @@ void SimulationControl::sim_control_joystick(SDL_Event event,
 	}
 
 	if (event.type == SDL_JOYBUTTONUP) {
-		cout << "debug: SimCtrl l." << __LINE__ <<" event ="<< (int)event.jbutton.button  <<endl;
+		// cout << "debug: SimCtrl l." << __LINE__ <<" event ="<< (int)event.jbutton.button  <<endl;
 
 		if (event.jbutton.button == 4) {
 			rotationUp = false;
@@ -1296,7 +1296,7 @@ void SimulationControl::sim_control_joystick(SDL_Event event,
 		if (event.jbutton.button == 9 && gv->selectionMarkerMode) {
 			// cout << "debug: SimulationControl " << __LINE__ <<endl;
 			if (hf->processConfirmButtonPress()){
-				cout << "debug@SC l. "<<__LINE__<<endl;
+				// cout << "debug@SC l. "<<__LINE__<<endl;
 				repaint = true;
 				// cout << "debug: SimulationControl " << __LINE__ <<endl;
 				cout << " debug: event.jbutton.button == 9 && gv->selectionMarkerMode" <<endl;
@@ -1577,7 +1577,7 @@ void SimulationControl::sim_control_wait_for_completed_init(bool boWaitForUserIn
 
 	while (true) {
 //#if defined(WIN32)
-		 cout << "debug: simctrl " << __LINE__ <<endl;
+		//  cout << "debug: simctrl " << __LINE__ <<endl;
 		 sendMessageSTATE("state_request");
 		 receiveMessageSTATE();
 //#endif
@@ -1614,16 +1614,16 @@ void SimulationControl::sim_control_wait_for_completed_init(bool boWaitForUserIn
 	}
 	gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidthFixed, 4);
 //#if defined(WIN32)
-	cout << "debug: simctrl " << __LINE__ <<endl;
-	 sendMessagePATH(gv->pathDataForKuka);
-	 receiveMessagePATH();
+	// cout << "debug: simctrl " << __LINE__ <<endl;
+	//  sendMessagePATH(gv->pathDataForKuka);
+	//  receiveMessagePATH();
 //#endif
 
 	while (true) {
 //#if defined(WIN32)
-		 cout << "debug: simctrl " << __LINE__ <<endl;
-		 sendMessageSTATE("state_request");
-		 receiveMessageSTATE();
+		//  cout << "debug: simctrl " << __LINE__ <<endl;
+		//  sendMessageSTATE("state_request");
+		//  receiveMessageSTATE();
 //#endif
 
 		vector<string> splitList;
@@ -1646,16 +1646,16 @@ void SimulationControl::sim_control_wait_for_completed_init(bool boWaitForUserIn
 	}
 	gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidthOpen, 4);
 //#if defined(WIN32)
-	cout << "debug: simctrl " << __LINE__ <<endl;
-	 sendMessagePATH(gv->pathDataForKuka);
-	 receiveMessagePATH();
+	// cout << "debug: simctrl " << __LINE__ <<endl;
+	//  sendMessagePATH(gv->pathDataForKuka);
+	//  receiveMessagePATH();
 //#endif
 
 	while (true) {
 //#if defined(WIN32)
-		 cout << "debug: simctrl " << __LINE__ <<endl;
-		 sendMessageSTATE("state_request");
-		 receiveMessageSTATE();
+		//  cout << "debug: simctrl " << __LINE__ <<endl;
+		//  sendMessageSTATE("state_request");
+		//  receiveMessageSTATE();
 //#endif
 
 		vector<string> splitList;
@@ -2519,9 +2519,9 @@ void SimulationControl::sim_control_add_obj_during_initialization(
 		if (gv->processInitWithRealRobot) {
 
 //#if defined(WIN32)
-			 cout << "debug: simctrl " << __LINE__ <<endl;
-			 sendMessagePATH("zero");
-			 receiveMessagePATH();
+			//  cout << "debug: simctrl " << __LINE__ <<endl;
+			//  sendMessagePATH("zero");
+			//  receiveMessagePATH();
 //#endif
 			gv->pathDataForKuka = "normal,";
 			for (int i = 0; i < gv->firstSegSize; i++) {
@@ -2539,9 +2539,9 @@ void SimulationControl::sim_control_add_obj_during_initialization(
 			gv->pathDataForKuka += hf->to_string_with_precision(
 					gv->grippingWidthOpen, 4);
 //#if defined(WIN32)
-			cout << "debug: simctrl " << __LINE__ <<endl;
-			 sendMessagePATH(gv->pathDataForKuka);
-			 receiveMessagePATH();
+			// cout << "debug: simctrl " << __LINE__ <<endl;
+			//  sendMessagePATH(gv->pathDataForKuka);
+			//  receiveMessagePATH();
 //#endif
 			gv->initWaitForFinish = true;
 		}
@@ -2718,7 +2718,7 @@ void SimulationControl::sim_control_virtual_mode1(){
 	CollisionDetection *cd=CollisionDetection::get_instance();
 	HelperFunctions *hf=HelperFunctions::get_instance();
 
-	cout << "debug: SimCtrl. " << __LINE__ <<endl;
+	// cout << "debug: SimCtrl. " << __LINE__ <<endl;
 
 	do {
 		gv->collision_init = false;
@@ -3711,11 +3711,11 @@ void SimulationControl::sim_control_do_something4(
 	gv->objectPosReachable = false;
 
 
-	cout << "debug: simCtrl " << __LINE__ <<endl;
+	// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 	if (ik->doesThetaExist(gv->pathStartPos.x, gv->pathStartPos.y,
 			gv->pathStartPos.z)) {
-		cout << "debug: simCtrl " << __LINE__ <<endl;
+		// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 		ik->writeQValues(gv->qValuesObjectStart);
 		if (abs(
@@ -3867,7 +3867,7 @@ void SimulationControl::sim_control_do_something4(
 								gv->secondSegSize = 1;
 								pp->nodeIndex = 1;
 
-								cout << "debug: simCtrl " << __LINE__ <<endl;
+								// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 								while (pp->nodeIndex != 0) {
 									pp->nodeIndex =
@@ -3900,7 +3900,7 @@ void SimulationControl::sim_control_do_something4(
 									gv->secondSegSize++;
 								}
 
-								cout << "debug: simCtrl " << __LINE__ <<endl;
+								// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 								gv->secondSegLengthTotal = 0.0f;
 								for (int i = 1; i < gv->secondSegSize; i++) {
@@ -3973,7 +3973,7 @@ void SimulationControl::sim_control_do_something4(
 		cout << "Sim. info: current object position not reachable!" << endl;
 	}
 	if (gv->objectPosReachable) {
-		cout << "debug: simCtrl " << __LINE__ <<endl;
+		// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 		gv->oldObstaclePositions[0] = gv->colliders[12].offsets[0];
 		gv->oldObstaclePositions[1] = gv->colliders[12].offsets[1];
@@ -3992,18 +3992,18 @@ void SimulationControl::sim_control_do_something4(
 		gv->oldMTPos[1] = gv->colliders[15].offsets[1];
 		gv->oldMTPos[2] = gv->colliders[15].angles[0];
 
-		cout << "debug: simCtrl " << __LINE__ <<endl;
+		// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 		if (!gv->advancedControlMode) {
 			srand(1);
 			generator1.seed(1);
 		}
 
-		cout << "debug: simCtrl " << __LINE__ <<endl;
+		// cout << "debug: simCtrl " << __LINE__ <<endl;
 		prot->mt_preparation(1, generator1, distribution1, generator2,
 				distribution2, generator3, distribution3);
 
-		cout << "debug: simCtrl " << __LINE__ <<endl;
+		// cout << "debug: simCtrl " << __LINE__ <<endl;
 
 		if (!gv->advancedControlMode) {
 			srand((unsigned) (time(NULL)));
@@ -4311,7 +4311,7 @@ void SimulationControl::sim_control_do_something4(
 		}
 	} else
 	 {
-		cout << "debug: simCtrl " << __LINE__ <<endl;
+		// cout << "debug: simCtrl " << __LINE__ <<endl;
 		cout
 				<< "Sim. info: complete gv->path planning failed or start/end not reachable properly -> no safety evaluation possible!"
 				<< endl;
@@ -4384,7 +4384,7 @@ void SimulationControl::sim_control_sync_sim(default_random_engine generator1,
 
 		cout << "Real exec. info: manual abort!" << endl;
 //#if defined(WIN32)
-		 cout << "debug: simctrl " << __LINE__ <<endl;
+		 cout << " " << __LINE__ <<endl;
 		 sendMessageSTATE("abort_transport");
 		 receiveMessageSTATE();
 //#endif
@@ -4404,7 +4404,7 @@ void SimulationControl::sim_control_sync_sim(default_random_engine generator1,
 			gv->pathAltStartPos.y = (ik->len1 + ik->len2 * gv->q1Sin + ik->len3 * gv->q12Sin + ik->len4 * gv->q123Sin) * gv->q0Cos;
 			gv->pathAltStartPos.z = ik->len0 + ik->len2 * gv->q1Cos + ik->len3 * gv->q12Cos + ik->len4 * gv->q123Cos;
 //#if defined(WIN32)
-			 cout << "debug: simctrl " << __LINE__ <<endl;
+			//  cout << "debug: simctrl " << __LINE__ <<endl;
 			 sendMessageSTATE("abort_transport");
 			 receiveMessageSTATE();
 //#endif
@@ -4455,7 +4455,7 @@ void SimulationControl::sim_control_sync_sim(default_random_engine generator1,
 				}
 				gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidth, 4);
 //#if defined(WIN32)
-				 cout << "debug: simctrl " << __LINE__ <<endl;
+				//  cout << "debug: simctrl " << __LINE__ <<endl;
 				 sendMessagePATH(gv->pathDataForKuka);
 				 receiveMessagePATH();
 //#endif
@@ -4674,7 +4674,7 @@ bool SimulationControl::do_something5(bool repaint,
 	FrequentOps *fo = FrequentOps::get_instance();
 	RealRobotExecution *rre = RealRobotExecution::get_instance();
 	MixedFunctions *mf = MixedFunctions::get_instance();
-	cout << "dbg@simCtrl " << __LINE__ << endl;
+	// cout << "dbg@simCtrl " << __LINE__ << endl;
 	//TODO: this seems to be the second path planning attempt. Where is the first one???
 	gv->grippingWidth = gv->grippingWidthFixed;
 	gv->objectPosReachable = false;
@@ -4729,7 +4729,7 @@ bool SimulationControl::do_something6(bool repaint,
 	FrequentOps *fo = FrequentOps::get_instance();
 	RealRobotExecution *rre = RealRobotExecution::get_instance();
 
-	cout << "debug: main " << __LINE__ << endl;
+	// cout << "debug: main " << __LINE__ << endl;
 	gv->grippingWidth = gv->grippingWidthOpen;
 	gv->objectPosReachable = false;
 	for (int i = 0; i < 10; i++) {

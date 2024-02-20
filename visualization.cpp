@@ -3,18 +3,13 @@
  *
  *  Created on: XX.YY.ZZ
  *
- *      Author: Lennard Hettich, Manuel Müller
+ *      Author: Manuel Müller, Rishika Agawal, Lennard Hettich
  *      (C) IAS University of Stuttgart
  *
  * visualization.cpp
  * this module contains the main function of the simulation.
  * It is ment to summarize all the requirements for the simulation.
  *
- *
- * TODO:
- * * understand function evaluateDetections() and evaluateDetectionsAlt().
- * * understand FrequentOperations.evaluatedDetections[] - especially 4..7 for the obstacles.
- * * port the servers to linux
  */
 #include <iostream>
 #include <fstream>
@@ -60,12 +55,6 @@ using namespace std;
 #include "src/Constants.h"
 #include "src/shader.h"
 #include "src/collider.h"
-//#include "src/RobotModel.h"
-//#include "src/ObstacleModels.h"
-//#include "src/WorkpieceModels.h"
-//#include "src/AdversaryCollider.h"
-//#include "src/MonitoringToolModels.h"
-//#include "src/MiscModels.h"
 #include "src/CollisionDetection.h"
 
 #include "src/InverseKinematic.h"
@@ -82,12 +71,12 @@ using namespace std;
 #include "src/AutomateSimState.h"
 
 
-#include "src/serverObs.h"
-#include "src/serverML.h"
-#include "src/serverMT1.h"
-#include "src/serverMT2.h"
-#include "src/serverPath.h"
-#include "src/serverState.h"
+// #include "src/serverObs.h"
+// #include "src/serverML.h"
+// #include "src/serverMT1.h"
+// #include "src/serverMT2.h"
+// #include "src/serverPath.h"
+// #include "src/serverState.h"
 #include "src/parser.h"
 
 #define CONVHULL_3D_ENABLE
@@ -185,10 +174,6 @@ int main()
 									{34.5 , 3.5, 312.237},{1.5, 38.75,  9.88307},
 									{-26.0, 10.0, 50.0}, {26  , 10,  130.0}};
 
-	//float workpiecesPosition[6][3]={{31.3949 , -3.93702,  9.88307}, {25.75997, -10.9935, 263.183}, 
-	//								{34.5 , 3.5, 312.237}, {-13.3847, 25.9136,  230.733},{1.5, 38.75,  9.88307}
-	//								{-26.6928, 14.7194, 66.6707}, {-22.05  , -2.31619,  131.165}{-26.0, 10.0, 50.0}, {26  , 10,  130.0}};
-
 	// Create an output filestream object
     std::ofstream myfile;
 	myfile.open ("test.csv",ios::out|ios::app);
@@ -216,17 +201,6 @@ int main()
 			}
 
 		}
-		//send object coordinats
-		sendMessageObs(coord);
-		// check for status of successfull reception of object coordinates
-		thread threadObs(receiveMessageObs);
-		threadObs.join();
-		if(gv -> stateMessageObs != "Received successfully")
-		{
-			cout<<"Object "<<i<<" coordinates not received successfuly"<<endl;
-			break;
-		}
-
 	}
 
 	//-----------------------------------------------
@@ -316,20 +290,20 @@ int main()
 	//--------------Initialize Interface         --------------
 	//---------------------------------------------------------
 	
-//#if defined(WIN32)
-	setupServerML();
-	if (!gv->virtualMode) {
-		setupServerMT1();
-		setupServerMT2();
-	}
 
 	if (mouseControl) {
+		std::cerr << "Mouse Conrol not implemented! Return..."<<std::endl;
+		//  return 1;
 		//ShowCursor(false);
+	}else{
+		std::cout << "config done..."<<std::endl;
 	}
 
-	setupServerPATH(gv->virtualMode);
-	setupServerSTATE(gv->virtualMode);
+	// setupServerPATH(gv->virtualMode);
+	// setupServerSTATE(gv->virtualMode);
 //#endif
+
+
 
 	//---------------------------------------------------------
 	//--------------Actual simulation loop       --------------
@@ -340,11 +314,11 @@ int main()
 			fpsInit = SDL_GetPerformanceCounter();
 		}
 
-		if (mouseControl) {
-			gv->axisX = 0; gv->axisY = 0;
-			rotationUp = false;
-			rotationDown = false;
-		}
+		// if (mouseControl) {
+		// 	gv->axisX = 0; gv->axisY = 0;
+		// 	rotationUp = false;
+		// 	rotationDown = false;
+		// }
 
 //		-------------------------------------modeActive
 //		Simulation environment control initial state.
@@ -359,9 +333,9 @@ int main()
 				repaint=sc->sim_control_keyup(event,repaint,boWaitForSpace);
 			}
 
-			if (mouseControl) {
-				sc->sim_control_mouse_ctrl(event, window, repaint,forwards,backwards,left,right, up, down, rotationDown, rotationUp);
-			}
+			// if (mouseControl) {
+			// 	sc->sim_control_mouse_ctrl(event, window, repaint,forwards,backwards,left,right, up, down, rotationDown, rotationUp);
+			// }
 			else {
 				sc->sim_control_joystick(event, repaint,forwards,backwards,left,right, up, down, rotationDown, rotationUp);
 			}
@@ -372,56 +346,60 @@ int main()
 		if(gv -> autoFlag == 0)// clear workpieces / Initialise
 		{
 			// get the obstacle coordinates
-			receiveMessageObs();
+			// receiveMessageObs();
 
-			if(gv -> stateMessageObs == "connection_error")
-			{
-				cout<<"Info: Could not receive the obstacle position"<< endl;
-				myfile.close();
-				break;
+			// if(gv -> stateMessageObs == "connection_error")
+			// {
+			// 	cout<<"Info: Could not receive the obstacle position"<< endl;
+			// 	myfile.close();
+			// 	break;
 
-			}
+			// }
 
-			// stop the simulator once generation limit has reached
-			else if(gv -> stateMessageObs == "Completed generation")
-			{
-				cout<<"Info: Generation Complete"<< endl;
-				// stop logging the data
-				myfile.close();
-				sendMessageObs("process complete");
-				break;
+			// // stop the simulator once generation limit has reached
+			// else if(gv -> stateMessageObs == "Completed generation")
+			// {
+			// 	cout<<"Info: Generation Complete"<< endl;
+			// 	// stop logging the data
+			// 	myfile.close();
+			// 	sendMessageObs("process complete");
+			// 	break;
 
 
-			}
-			else
-			{
-				//parse the string
-				obs_pos = string_parser(gv ->stateMessageObs);
+			// }
+			// else
+			// {
+			// 	//parse the string
+			// 	obs_pos = string_parser(gv ->stateMessageObs);
 				
 
-			}
+			// }
 
-				gv->obstacles[0].init(0,*(obs_pos + 0),*(obs_pos + 1),4,*(obs_pos + 2)) ;
-				gv->obstacles[1].init(1,*(obs_pos + 3),*(obs_pos + 4),3,*(obs_pos + 5))  ;
-				gv->obstacles[2].init(2,*(obs_pos + 6),*(obs_pos + 7),6,*(obs_pos + 8))  ;
+				//obs_pos = string_parser(gv ->stateMessageObs);
 
+				// gv->obstacles[0].init(0,*(obs_pos + 0),*(obs_pos + 1),4,*(obs_pos + 2)) ;
+				// gv->obstacles[1].init(1,*(obs_pos + 3),*(obs_pos + 4),3,*(obs_pos + 5))  ;
+				// gv->obstacles[2].init(2,*(obs_pos + 6),*(obs_pos + 7),6,*(obs_pos + 8))  ;
+
+				// obstacle position hardcoded for showcase
+				gv->obstacles[0].init(0, 25.0,27.0,0.0,0.0) ;
+				gv->obstacles[1].init(1,-22.0,-15.0,0.0,0.0)  ;
+				gv->obstacles[2].init(2,18.0,5.0,0.0,0.0)  ;
 				
 				gv->obstacles[0].print();
 				gv->obstacles[1].print();
 				gv->obstacles[2].print();
 
 				// storing obstacle positions in csv file
-				std::string obs1_pos = std::to_string(*(obs_pos + 0)) + ";" + std::to_string(*(obs_pos + 1)) + ";" + std::to_string(*(obs_pos + 2));
-				std::string obs2_pos = std::to_string(*(obs_pos + 3)) + ";" + std::to_string(*(obs_pos + 4)) + ";" + std::to_string(*(obs_pos + 5));
-				std::string obs3_pos = std::to_string(*(obs_pos + 6)) + ";" + std::to_string(*(obs_pos + 7)) + ";" + std::to_string(*(obs_pos + 8));
-
-				
-				myfile << obs1_pos;
-				myfile << ",";
-				myfile << obs2_pos;
-				myfile << ",";
-				myfile << obs3_pos;
-				myfile << ",";
+				// std::string obs1_pos = std::to_string(*(obs_pos + 0)) + ";" + std::to_string(*(obs_pos + 1)) + ";" + std::to_string(*(obs_pos + 2));
+				// std::string obs2_pos = std::to_string(*(obs_pos + 3)) + ";" + std::to_string(*(obs_pos + 4)) + ";" + std::to_string(*(obs_pos + 5));
+				// std::string obs3_pos = std::to_string(*(obs_pos + 6)) + ";" + std::to_string(*(obs_pos + 7)) + ";" + std::to_string(*(obs_pos + 8));
+				// myfile << obs1_pos;
+				// myfile << ",";
+				// myfile << obs2_pos;
+				// myfile << ",";
+				// myfile << obs3_pos;
+				// myfile << ",";
 
 			autoss -> automateInit();
 			gv -> autoFlag = 1;
@@ -479,7 +457,7 @@ int main()
 			cout<< "-----------------------------------------------"<< endl;
 			
 
-			sendMessageObs(std::to_string(gv ->collision));
+			// sendMessageObs(std::to_string(gv ->collision));
 			gv->collisionObsIndex = -1;
 		}
 		//		-------------------------------------
@@ -496,26 +474,26 @@ int main()
 			gv->synMode = gv->asynMode;
 		}
 		if (gv->initWaitForFinish) {
-			cout << "debug: main " << __LINE__ <<endl;
+			// cout << "debug: main " << __LINE__ <<endl;
 			sc->sim_control_wait_for_completed_init(boWaitForSpace);
 		}
 
 		if (!gv->virtSim && gv->synMode == 0 && gv->transportPhase == 0) {
-			cout << "debug: main " << __LINE__ <<endl;
+			// cout << "debug: main " << __LINE__ <<endl;
 			sc->train_agents(repaint,
 					generator1,distribution1,
 					generator2,distribution2,
 					generator3,distribution3);
 		}
 		else if (!gv->virtSim && gv->synMode == 0 && gv->transportPhase == 1) {
-			cout << "debug: main " << __LINE__ <<endl;
+			// cout << "debug: main " << __LINE__ <<endl;
 			rre->sim_control_transportPhase1(repaint,
 					generator1,distribution1,
 					generator2,distribution2,
 					generator3,distribution3);
 		}
 		else if (!gv->virtSim && gv->synMode == 0 && gv->transportPhase == 2) {
-			cout << "debug: main " << __LINE__ <<endl;
+			// cout << "debug: main " << __LINE__ <<endl;
 			rre->sim_control_transportPhas2(
 					repaint,
 					generator1,distribution1,
@@ -557,7 +535,7 @@ int main()
 		 */
 		else if (gv->synMode == 2 && !gv->simTargetSelection && !gv->simTransport && gv->simConfirmation)
 		{
-			cout << "debug: main " << __LINE__ <<endl;
+			// cout << "debug: main " << __LINE__ <<endl;
 
 			if (!gv->MT1currentlyActive || !gv->MT2currentlyActive) {
 				cout << "Error: a MT is not active!" << endl;
@@ -619,7 +597,7 @@ int main()
 				cout << "E: invalid result @ mail l. " << __LINE__ <<endl;
 
 			}else{
-				cout << "debug: main " << __LINE__ <<endl;
+				// cout << "debug: main " << __LINE__ <<endl;
 			}
 
 			std::cout<<"----- FINAL2 obstacle positions ----"<<std::endl;
@@ -646,7 +624,7 @@ int main()
 		else if (gv->synMode == 2 && !gv->simTargetSelection && gv->simTransport && gv->transportPhase == 0 && !gv->virtSim)
 		{
 			// transport phase 0
-			cout << "debug: main " << __LINE__ <<endl;
+			// cout << "debug: main " << __LINE__ <<endl;
 			sc->sim_control_do_something4(repaint,
 					generator1,distribution1,
 					generator2,distribution2,
@@ -1167,7 +1145,7 @@ int main()
 							gv->pathDataForKuka += hf->to_string_with_precision(0.0f, 4);
 
 //#if defined(WIN32)		
-							cout << "debug: main " << __LINE__ <<endl;
+							// cout << "debug: main " << __LINE__ <<endl;
 							 sendMessagePATH(gv->pathDataForKuka);
 							 receiveMessagePATH();
 //#endif
@@ -1239,10 +1217,10 @@ int main()
 							gv->pathDataForKuka += hf->to_string_with_precision(gv->q0ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q1ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q2ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q3ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q4ValsTempSeg[i], 4) + ",";
 						}
 						gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidth, 4);
-						cout << "debug: main " << __LINE__ <<endl;
+						// cout << "debug: main " << __LINE__ <<endl;
 //#if defined(WIN32)
-						 sendMessagePATH(gv->pathDataForKuka);
-						 receiveMessagePATH();
+						//  sendMessagePATH(gv->pathDataForKuka);
+						//  receiveMessagePATH();
 //endif
 
 						gv->realGripperWidth = gv->grippingWidthOpen;
@@ -1282,52 +1260,56 @@ int main()
 				else {
 					if (gv->virtualMode) {
 //#if defined(WIN32)
-						 cout << "debug: main " << __LINE__ <<endl;
-						 sendMessageSTATE("state_request");
-						 receiveMessageSTATE();
+						//  cout << "debug: main " << __LINE__ <<endl;
+						//  sendMessageSTATE("state_request");
+						//  receiveMessageSTATE();
 //#endif
 					}
 					else {
 						if (gv->MT1currentlyActive && gv->MT2currentlyActive) {
+							std::cout<<"W: Socket communication to ML part currently deactivated!"<<std::endl;
 //#if defined(WIN32)
-							 sendMessageMT1("state_request");
-							 sendMessageMT2("state_request");
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessageSTATE("state_request");
+							//  sendMessageMT1("state_request");
+							//  sendMessageMT2("state_request");
+							//  cout << "debug: main " << __LINE__ <<endl;
+							//  sendMessageSTATE("state_request");
 
-							thread mt1Thread( receiveMessageMT1);
-							thread mt2Thread( receiveMessageMT2);
-							thread stateThread(receiveMessageSTATE);
+							// thread mt1Thread( receiveMessageMT1);
+							// thread mt2Thread( receiveMessageMT2);
+							// thread stateThread(receiveMessageSTATE);
 
-							mt1Thread.join();
-							mt2Thread.join();
-							stateThread.join();
+							// mt1Thread.join();
+							// mt2Thread.join();
+							// stateThread.join();
 //#endif
 						}
 						else if (gv->MT1currentlyActive && !gv->MT2currentlyActive) {
+							std::cout<<"W: Socket communication to ML part currently deactivated!"<<std::endl;
+
 //#if defined(WIN32)
-							 sendMessageMT1("state_request");
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessageSTATE("state_request");
+							//  sendMessageMT1("state_request");
+							//  cout << "debug: main " << __LINE__ <<endl;
+							//  sendMessageSTATE("state_request");
 
-							thread mt1Thread( receiveMessageMT1);
-							thread stateThread( receiveMessageSTATE);
+							// thread mt1Thread( receiveMessageMT1);
+							// thread stateThread( receiveMessageSTATE);
 
-							mt1Thread.join();
-							stateThread.join();
+							// mt1Thread.join();
+							// stateThread.join();
 //#endif
 						}
 						else if (!gv->MT1currentlyActive && gv->MT2currentlyActive) {
+							std::cout<<"W: Socket communication to ML part currently deactivated!"<<std::endl;
 //#if defined(WIN32)
-							 sendMessageMT2("state_request");
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessageSTATE("state_request");
+							//  sendMessageMT2("state_request");
+							//  cout << "debug: main " << __LINE__ <<endl;
+							//  sendMessageSTATE("state_request");
 
-							thread mt2Thread(receiveMessageMT2);
-							thread stateThread(receiveMessageSTATE);
+							// thread mt2Thread(receiveMessageMT2);
+							// thread stateThread(receiveMessageSTATE);
 
-							mt2Thread.join();
-							stateThread.join();
+							// mt2Thread.join();
+							// stateThread.join();
 //#endif
 						}
 						else {
@@ -1578,10 +1560,10 @@ int main()
 						if (gv->objectPosReachable) {
 							if (!gv->atStandby) cout << "Real exec. warning: gripper zero init. can cause gv->collisions when robot arm is not in standby position!" << endl;
 //#if defined(WIN32)
-							cout << "debug: main " << __LINE__ <<endl;
+							// cout << "debug: main " << __LINE__ <<endl;
 
-							 sendMessagePATH("zero");
-							 receiveMessagePATH();
+							//  sendMessagePATH("zero");
+							//  receiveMessagePATH();
 //#endif
 
 							gv->atStandby = false;
@@ -1604,9 +1586,9 @@ int main()
 							}
 							gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidth, 4);
 //#if defined(WIN32)
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessagePATH(gv->pathDataForKuka);
-							 receiveMessagePATH();
+							//  cout << "debug: main " << __LINE__ <<endl;
+							//  sendMessagePATH(gv->pathDataForKuka);
+							//  receiveMessagePATH();
 //#endif
 
 							gv->realGripperWidth = gv->grippingWidthOpen;
@@ -1681,10 +1663,10 @@ int main()
 							gv->pathDataForKuka += hf->to_string_with_precision(gv->q0ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q1ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q2ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q3ValsTempSeg[i], 4) + "," + hf->to_string_with_precision(gv->q4ValsTempSeg[i], 4) + ",";
 						}
 						gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidth, 4);
-//#if defined(WIN32)
-						 cout << "debug: main " << __LINE__ <<endl;
-						 sendMessagePATH(gv->pathDataForKuka);
-						 receiveMessagePATH();
+// //#if defined(WIN32)
+// 						 cout << "debug: main " << __LINE__ <<endl;
+// 						 sendMessagePATH(gv->pathDataForKuka);
+// 						 receiveMessagePATH();
 //#endif
 
 						gv->realGripperWidth = gv->grippingWidthFixed;
@@ -1755,9 +1737,9 @@ int main()
 						}
 						gv->pathDataForKuka += hf->to_string_with_precision(gv->grippingWidth, 4);
 //#if defined(WIN32)
-						 cout << "debug: main " << __LINE__ <<endl;
-						 sendMessagePATH(gv->pathDataForKuka);
-						 receiveMessagePATH();
+						//  cout << "debug: main " << __LINE__ <<endl;
+						//  sendMessagePATH(gv->pathDataForKuka);
+						//  receiveMessagePATH();
 //#endif
 
 						gv->realGripperWidth = gv->grippingWidthOpen;
@@ -1797,37 +1779,37 @@ int main()
 				else {
 					if (gv->virtualMode) {
 //#if defined(WIN32)
-						 cout << "debug: main " << __LINE__ <<endl;
-						 sendMessageSTATE("state_request");
-						 receiveMessageSTATE();
+						//  cout << "debug: main " << __LINE__ <<endl;
+						//  sendMessageSTATE("state_request");
+						//  receiveMessageSTATE();
 //#endif
 					}
 					else {
 						if (gv->MT1currentlyActive && gv->MT2currentlyActive) hf->requestRealSystemState();
 						else if (gv->MT1currentlyActive && !gv->MT2currentlyActive) {
 //#if defined(WIN32)
-							 sendMessageMT1("state_request");
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessageSTATE("state_request");
+							//  sendMessageMT1("state_request");
+							//  cout << "debug: main " << __LINE__ <<endl;
+							// //  sendMessageSTATE("state_request");
 
-							thread mt1Thread( receiveMessageMT1);
-							thread stateThread(receiveMessageSTATE);
+							// thread mt1Thread( receiveMessageMT1);
+							// thread stateThread(receiveMessageSTATE);
 
-							mt1Thread.join();
-							stateThread.join();
+							// mt1Thread.join();
+							// stateThread.join();
 //#endif
 						}
 						else if (!gv->MT1currentlyActive && gv->MT2currentlyActive) {
 //#if defined(WIN32)
-							 sendMessageMT2("state_request");
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessageSTATE("state_request");
+							//  sendMessageMT2("state_request");
+							//  cout << "debug: main " << __LINE__ <<endl;
+							//  sendMessageSTATE("state_request");
 
-							thread mt2Thread( receiveMessageMT2);
-							thread stateThread(receiveMessageSTATE);
+							// thread mt2Thread( receiveMessageMT2);
+							// thread stateThread(receiveMessageSTATE);
 
-							mt2Thread.join();
-							stateThread.join();
+							// mt2Thread.join();
+							// stateThread.join();
 //#endif
 						}
 						else {
@@ -2099,9 +2081,9 @@ int main()
 							}
 							gv->pathDataForKuka += hf->to_string_with_precision(0, 4);
 //#if defined(WIN32)
-							 cout << "debug: main " << __LINE__ <<endl;
-							 sendMessagePATH(gv->pathDataForKuka);
-							 receiveMessagePATH();
+							//  cout << "debug: main " << __LINE__ <<endl;
+							//  sendMessagePATH(gv->pathDataForKuka);
+							//  receiveMessagePATH();
 //#endif
 
 							gv->realExecSubPhase++;
@@ -2142,10 +2124,10 @@ int main()
 				else {
 					if (gv->virtualMode) {
 //#if defined(WIN32)
-						 cout << "debug: main " << __LINE__ <<endl;
-						 sendMessageSTATE("state_request");
+						//  cout << "debug: main " << __LINE__ <<endl;
+						//  sendMessageSTATE("state_request");
 						 
-						 receiveMessageSTATE();
+						//  receiveMessageSTATE();
 //#endif
 					}
 					else hf->requestRealSystemState();
