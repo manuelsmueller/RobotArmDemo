@@ -1,7 +1,7 @@
 /*
  * visualization.cpp
  *
- *  Created on: XX.YY.ZZ
+ *  Created on: 2024.02.22
  *
  *      Author: Manuel Müller, Lennard Hetticht
  *
@@ -593,7 +593,7 @@ int main()
 			// -------------------------------------------------
 
 			if(sc->sim_control_position_obstacles(gv->obstacles, writeObstacles)){
-				cout << "E: invalid result @ mail l. " << __LINE__ <<endl;
+				// cout << "E: invalid result @ mail l. " << __LINE__ <<endl;
 
 			}else{
 				// cout << "debug: main " << __LINE__ <<endl;

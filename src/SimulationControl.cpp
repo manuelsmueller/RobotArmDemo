@@ -1190,7 +1190,7 @@ void SimulationControl::sim_control_mouse_ctrl(SDL_Event event, SDL_Window* wind
 	if (event.type == SDL_MOUSEBUTTONUP) {
 		if (event.button.button == SDL_BUTTON_MIDDLE && gv->selectionMarkerMode) {
 			if (hf->processConfirmButtonPress()){
-				cout << "debug@SC l. "<<__LINE__<<endl;
+				// cout << "debug@SC l. "<<__LINE__<<endl;
 				repaint = true;
 			}
 		}
@@ -1252,7 +1252,7 @@ void SimulationControl::sim_control_joystick(SDL_Event event,
 		if (event.jbutton.button == 4) {
 			rotationUp = true;
 //			// cout << "debug: SimulationControl " << __LINE__ <<endl;
-			cout << " debug: SDL_JOYBUTTONDOWN, button = 4" <<endl;
+			// cout << " debug: SDL_JOYBUTTONDOWN, button = 4" <<endl;
 		}
 		if (event.jbutton.button == 5) {
 			up = true;
@@ -1272,7 +1272,7 @@ void SimulationControl::sim_control_joystick(SDL_Event event,
 		if (event.jbutton.button == 5){
 			up = false;
 //			// cout << "debug: SimulationControl " << __LINE__ <<endl;
-			cout << " debug: SDL_JOYBUTTONUP, button = 5" <<endl;
+			cout << " : SDL_JOYBUTTONUP, button = 5" <<endl;
 		}
 
 		if (event.jbutton.button == 2 && gv->selectionMarkerMode) {
@@ -2662,7 +2662,7 @@ void SimulationControl::sim_control_do_something2(){
 	CollisionDetection *cd=CollisionDetection::get_instance();
 	InverseKinematic *ik=InverseKinematic::get_instance();
 
-	cout << "debug: simControl l." << __LINE__ <<endl;
+	// cout << "debug: simControl l." << __LINE__ <<endl;
 
 	gv->q0Sin = sin(gv->qValuesStandby[0] / 180.0f * M_PI);
 	gv->q0Cos = cos(gv->qValuesStandby[0] / 180.0f * M_PI);
@@ -3088,7 +3088,7 @@ void SimulationControl::Position_Obstacle_from_Ext(bool boOverride, ObjectPositi
 
 
 	if(boOverride){
-		cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
+		// cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
 		cd->recalculateCollider(&gv->colliders[12+obj.index],obj.x,obj.y,height,obj.angle, 0, 0,true);
 	}else{
 		// obstacle NOT detected by MT
@@ -3114,7 +3114,7 @@ void SimulationControl::Position_Obstacle_from_Ext(unsigned int index, bool boOv
 	FrequentOps *fo=FrequentOps::get_instance();
 	CollisionDetection *cd =CollisionDetection::get_instance();
 
-	cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
+	// cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
 
 	float height=0.0f;
 
@@ -3130,12 +3130,12 @@ void SimulationControl::Position_Obstacle_from_Ext(unsigned int index, bool boOv
 
 
 	if(boOverride){
-		cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
+		// cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
 		cd->recalculateCollider(&gv->colliders[12+index],x1,y1,height,phi1, 0, 0,true);
 	}else{
 		// obstacle 1 NOT detected by MT
 		if (fo->detectionCounts[4+index] <= 0) {
-			cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
+			// cout <<"debug@SimulationControl l."<< __LINE__ <<endl;
 			cd->recalculateCollider(&gv->colliders[12+index],x1,y1,height, phi1, 0, 0,true);
 		}
 	}
