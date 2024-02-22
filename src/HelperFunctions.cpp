@@ -358,7 +358,7 @@ void HelperFunctions::requestRealSystemState() {
 //#if defined(WIN32)
 	 sendMessageMT1("state_request");
 	 sendMessageMT2("state_request");
-	 cout << "debug: helperFunc " << __LINE__ <<endl;
+	//  cout << "debug: helperFunc " << __LINE__ <<endl;
 	 sendMessageSTATE("state_request");
 
 	thread mt1Thread(receiveMessageMT1);
@@ -604,7 +604,7 @@ bool HelperFunctions::processConfirmButtonPress() {
 			}
 		}
 
-		cout << "debug@HF l. "<<__LINE__<<endl;
+		// cout << "debug@HF l. "<<__LINE__<<endl;
 
 		if (gv->selectedWorkpieceIndex != -1 && abs(gv->selectedTargetPosition[0]) < 1000.0f) {
 			gv->selectionMarkerMode = false;

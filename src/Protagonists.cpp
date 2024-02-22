@@ -274,7 +274,7 @@ void Protagonists::mt_preparation(int mtIndex,
 
                 if(maxRuns<=0){
                 	std::cout<<"E: optimmization did not succeed within maxRuns!"<<std::endl;
-                	cout << "debug: prot. " << __LINE__ <<endl;
+                	// cout << "debug: prot. " << __LINE__ <<endl;
                 }
 
                 if (mtIndex == 1) {

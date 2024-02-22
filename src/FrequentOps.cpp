@@ -717,10 +717,10 @@ void FrequentOps::evaluateDetections(bool calcActionSpace) {
 	HelperFunctions *hf = HelperFunctions::get_instance();
 	GlobalVariables *gv = GlobalVariables::get_instance();
 
-	cout << "debug: FrequentOps. " << __LINE__ <<endl;
+	// cout << "debug: FrequentOps. " << __LINE__ <<endl;
 
     if (calcActionSpace) {
-    	cout << "debug: FrequentOps. This function is deprecated!!! " << __LINE__ <<endl;
+    	// cout << "debug: FrequentOps. This function is deprecated!!! " << __LINE__ <<endl;
 
         actionSpaceSamples = 0;
         actionSpaceDist = 0.0f;
@@ -728,7 +728,7 @@ void FrequentOps::evaluateDetections(bool calcActionSpace) {
 
         if (detectionCounts[0] > 0) {
 
-        	cout << "debug: FrequentOps " << __LINE__ <<endl;
+        	// cout << "debug: FrequentOps " << __LINE__ <<endl;
 
             /*
             evaluatedDetections[0].x = 0.0f;
@@ -910,7 +910,7 @@ void FrequentOps::evaluateDetections(bool calcActionSpace) {
     }
 
     if (detectionCounts[5] > 0) {
-    	cout << "debug: FrequentOps. " << __LINE__ <<endl;
+    	// cout << "debug: FrequentOps. " << __LINE__ <<endl;
 
         if (detectionCounts[5] == 1) {
             evaluatedDetections[5].x = secondObsDetections[0].x;
@@ -953,7 +953,7 @@ void FrequentOps::evaluateDetections(bool calcActionSpace) {
     }
 
     if (detectionCounts[6] > 0) {
-    	cout << "debug: FrequentOps. " << __LINE__ <<endl;
+    	// cout << "debug: FrequentOps. " << __LINE__ <<endl;
 
         if (detectionCounts[6] == 1) {
             evaluatedDetections[6].x = thirdObsDetections[0].x;
@@ -1000,7 +1000,7 @@ void FrequentOps::evaluateDetectionsAlt() {
 	HelperFunctions *hf = HelperFunctions::get_instance();
 	GlobalVariables *gv = GlobalVariables::get_instance();
 
-	cout << "debug: FrequentOps. This function is deprecated!!! " << __LINE__ <<endl;
+	// cout << "debug: FrequentOps. This function is deprecated!!! " << __LINE__ <<endl;
 
     if (detectionCounts2[4] > 0) {
         if (detectionCounts2[4] == 1) {
