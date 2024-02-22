@@ -1,3 +1,14 @@
+/*
+ * parser.h
+ *
+ *  Created on: 2024.02.22
+ *
+ *      Author: Manuel Müller, Rishika Agawal
+ *
+ * parser.h
+ * this module contains the parsing of the client server communication.
+ */
+
 #ifndef PARSER_H_
 #define PARSER_H_
 

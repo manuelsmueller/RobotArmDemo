@@ -1,3 +1,14 @@
+/*
+ * parser.cpp
+ *
+ *  Created on: 2024.02.22
+ *
+ *      Author: Manuel Müller, Rishika Agawal
+ *
+ * parser.cpp
+ * this module contains the parsing of the client server communication.
+ */
+
 #include "parser.h"
 
 
