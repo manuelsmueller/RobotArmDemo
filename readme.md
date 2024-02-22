@@ -14,3 +14,6 @@ This simulation is written (and tested) for Linux but should also work for Windo
 
  # Run
  ./visualization
+
+ #Note:
+ This code is build on the basis of the work of Lennard Hettich, who provided a first version of the robot simulation.
