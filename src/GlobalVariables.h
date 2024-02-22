@@ -40,7 +40,6 @@ public:
 	// ---------------------------------------------------------
 	// ------------Global Variables                -------------
 	// ---------------------------------------------------------
-	// TODO: tidy up this mess!!!!
 	const static int transportableObjectsCount = 6, totalObjectsCount = 9;
 	const static int actionSpaceCount = 4;
 
